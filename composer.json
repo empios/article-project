@@ -1,0 +1,7 @@
+{
+    "require": {
+        "twig/twig": "^3.0",
+        "ext-mysqli": "*",
+        "vlucas/phpdotenv": "^5.3"
+    }
+}

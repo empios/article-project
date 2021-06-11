@@ -1,0 +1,33 @@
+{% extends "layout/layout.html.twig" %}
+{% block content %}
+<div class="container">
+    <div class="header mt-4 mb-4 ml-4 mr-4">
+        <h1 class="title">Register</h1>
+    </div>
+
+    <form method="post" action="views/registration/server.php" class="ml-4 mr-4">
+        <div class="field">
+            <label>Username</label>
+            <input class="input" type="text" name="username" value="">
+        </div>
+        <div class="field">
+            <label>Email</label>
+            <input class="input"  type="email" name="email" value="">
+        </div>
+        <div class="field">
+            <label>Password</label>
+            <input class="input"  type="password" name="password_1">
+        </div>
+        <div class="field">
+            <label>Confirm password</label>
+            <input class="input"  type="password" name="password_2">
+        </div>
+        <div class="field">
+            <button type="submit" class="button is-link" name="reg_user">Register</button>
+        </div>
+        <p>
+            Already a member? <a href="index.php?login=true">Sign in</a>
+        </p>
+    </form>
+</div>
+{% endblock %}

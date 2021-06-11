@@ -1,0 +1,161 @@
+{% extends "layout/layout.html.twig" %}
+{% block content %}
+    <div class="container">
+        <div>
+            <div class="columns mt-1 mb-4">
+                <div class="column">
+                    <h1 class="is-inline">Hi {{ username }}</h1>
+                    <button id="logout" class="button is-info is-small is-inline">Logout</button>
+                </div>
+            </div>
+        </div>
+        <div class="header mt-4 mb-4 ml-4 mr-4">
+            <h1 class="title is-inline">Article List</h1>
+            <button id="add" class="button is-primary is-inline">Add Article</button>
+        </div>
+        <div class="container mt-4">
+            {% for article in articles %}
+                <div class="card mt-4">
+                    <header class="card-header">
+                        <p class="card-header-title is-inline">
+                            {{ article[0] }}
+                        </p>
+                        <button id="{{ article[5] }}" onclick="deletePost(this)" class="button is-danger mt-2 mb-2 mr-2">Delete Article</button>
+                        <button id="{{ article[5] }}" onclick="updatePost(this)" class="button is-info mt-2 mb-2 mr-2">Update Article</button>
+                    </header>
+                    <div class="card-content">
+                        <div class="content">
+                            {{ article[1] }}
+                        </div>
+                    </div>
+                    <footer class="card-footer">
+                        <p class="card-footer-item">Status: {{ article[2] }}</p>
+                        <p class="card-footer-item">Username: {{ article[3] }}</p>
+                        <p class="card-footer-item">Category: {{ article[4] }}</p>
+                    </footer>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="add-form" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Add a article!</p>
+            </header>
+            <section class="modal-card-body">
+                <form method="post" action="views/registration/server.php">
+                    <div class="field">
+                        <label>Title</label>
+                        <input class="input" type="text" name="title" value="">
+                    </div>
+                    <div class="field">
+                        <label>Description</label>
+                        <textarea class="input" name="description" value=""></textarea>
+                    </div>
+                    <div class="field">
+                        <label>Status</label>
+                        <select class="input" name="status">
+                            {% for status in statuses %}
+                                <option value="{{ status[0] }}">{{ status[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Category</label>
+                        <select class="input" name="category">
+                            {% for category in categories %}
+                                <option value="{{ category[0] }}">{{ category[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" name="add_article" class="button is-success">Add</button>
+                </form>
+            </section>
+            <footer class="modal-card-foot">
+                <button id="close-modal" class="button">Cancel</button>
+            </footer>
+        </div>
+    </div>
+
+
+    <div id="update-form" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Update article</p>
+            </header>
+            <section class="modal-card-body">
+                <form method="post" action="views/registration/server.php">
+                    <div class="field">
+                        <label>Title</label>
+                        <input class="input" type="text" name="title" value="">
+                    </div>
+                    <div class="field">
+                        <label>Description</label>
+                        <textarea class="input" name="description" value=""></textarea>
+                    </div>
+                    <div class="field">
+                        <label>Status</label>
+                        <select class="input" name="status">
+                            {% for status in statuses %}
+                                <option value="{{ status[0] }}">{{ status[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Category</label>
+                        <select class="input" name="category">
+                            {% for category in categories %}
+                                <option value="{{ category[0] }}">{{ category[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <input type="hidden" id="article_id" name="article_id">
+                    <button type="submit" name="update_article" class="button is-link">Update</button>
+                </form>
+            </section>
+            <footer class="modal-card-foot">
+                <button id="close-modal_2" class="button">Cancel</button>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        function deletePost(element){
+            const id = $(element).attr('id');
+            $.ajax({
+                type: "POST",
+                url: "views/registration/server.php",
+                data: {id: id}
+            }).done(function () {
+                location.reload()
+            })
+        }
+        function updatePost(element){
+            const id = $(element).attr('id');
+            $('#update-form').addClass('is-active');
+            $('#article_id').val(id);
+        }
+        $('#logout').click(function() {
+            $.ajax({
+                type: "POST",
+                url: "views/registration/logout.php",
+                data: null
+            }).done(function () {
+                location.reload()
+            })
+        });
+
+        $('#add').click(function () {
+            $('#add-form').addClass('is-active');
+        });
+        $('#close-modal').click(function (){
+            $('#add-form').removeClass('is-active');
+        })
+        $('#close-modal_2').click(function (){
+            $('#update-form').removeClass('is-active');
+        })
+    </script>
+{% endblock %}
